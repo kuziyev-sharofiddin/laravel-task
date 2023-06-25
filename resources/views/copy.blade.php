@@ -1,3 +1,27 @@
+use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\MainController;
+use App\Http\Controllers\AnswerController;
+
+
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/dashboard', [MainController::class, 'dashboard'])->name('dashboard');
+    Route::get('/', [MainController::class, 'main'])->name('main');
+    Route::resource('applications', ApplicationController::class);
+    Route::get('applications/{application}/answer', AnswerController::class, 'create')->name('answers.create');
+    Route::post('applications/{application}/answer', AnswerController::class, 'store')->name('answers.create');
+
+});
+
+
+require __DIR__.'/auth.php';
+
+
+
+
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -55,9 +79,9 @@
                                     @endif
                                 </div>
                             </div>
-                        </div>
-                        <div>
-                            <button type="button" class="bg-green-500 text-white px-6 py-2 rounded font-medium mx-3 hover:bg-green-600 transition duration-200 each-in-out">Success</button>
+                            <div class="flex justify-end">
+                                <a href="" type="button" class="bg-green-500 text-white px-3 py-1 text-small  rounded font-medium mx-3 hover:bg-green-600 transition duration-200 each-in-out">Answer</a>
+                            </div>
                         </div>
                     </div>
                         @endforeach
@@ -100,35 +124,3 @@
         </div>
     </div>
 </x-app-layout>
-
-
-
-
-
-use App\Http\Controllers\ApplicationController;
-use App\Http\Controllers\MainController;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
-
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/dashboard', [MainController::class, 'dashboard'])->name('dashboard');
-    Route::get('/', [MainController::class, 'main'])->name('main');
-    Route::resource('applications', ApplicationController::class);
-
-});
-
-
-require __DIR__.'/auth.php';

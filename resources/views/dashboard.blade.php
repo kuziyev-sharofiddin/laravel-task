@@ -55,9 +55,15 @@
                                     @endif
                                 </div>
                             </div>
+                            @if (! $application->answer()->exists())
                             <div class="flex justify-end">
-                                <a href="" type="button" class="bg-green-500 text-white px-3 py-1 rounded font-medium mx-3 hover:bg-green-600 transition duration-200 each-in-out">Answer</a>
+                                <a href="{{ route('answers.create', ['application' => $application->id]) }}" type="button" class="bg-green-500 text-white px-3 py-1 text-small  rounded font-medium mx-3 hover:bg-green-600 transition duration-200 each-in-out">Answer</a>
                             </div>
+                            @else
+                            <hr>
+                            <h3 class="text-xs font-bold mt-2 text-indigo-600">Answer:</h3>
+                            <p>{{ $application->answer->body }}</p>
+                            @endif
                         </div>
                     </div>
                         @endforeach
@@ -85,7 +91,7 @@
                                 <input type="text" required name="subject" class="p-3 mt-2 mb-4 w-full bg-slate-200 rounded border-2 border-slate-200 focus:border-slate-600 focus:outline-none">
                                 <label class="uppercase text-sm font-bold opacity-70">Message</label>
                                 <textarea name="message" required rows="5" class="p-3 mt-2 mb-4 w-full bg-slate-200 rounded border-2 border-slate-200 focus:border-slate-600 focus:outline-none"></textarea>
-                                <label class="uppercase text-sm font-bold opacity-70">Language</label>
+                                <label class="uppercase text-sm font-bold opacity-70">File</label>
                                 <input type="file" name="file" class="p-3 mt-2 mb-4 w-full bg-slate-200 rounded border-2 border-slate-200 focus:border-slate-600 focus:outline-none">
                                 <input type="submit" class="py-3 px-6 my-2 bg-emerald-500 text-white font-medium rounded hover:bg-indigo-500 cursor-pointer ease-in-out duration-300" value="Send">
                               </form>
@@ -100,3 +106,4 @@
         </div>
     </div>
 </x-app-layout>
+
