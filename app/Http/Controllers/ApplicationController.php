@@ -13,6 +13,20 @@ use Illuminate\Http\Request;
 
 class ApplicationController extends Controller
 {
+
+    // public function __constuct(){
+    //     $this->middleware('role:manager')->only('index');
+    // }
+
+
+
+    public function index(){
+        return view('applications.index')->with([
+            'applications' => auth()->user()->applications()->latest()->paginate(10),
+        ]);
+    }
+
+
     public function store(StoreApplicationRequest $request){
 
         if($this->checkDate()){

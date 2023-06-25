@@ -15,7 +15,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [MainController::class, 'dashboard'])->name('dashboard');
     Route::get('/', [MainController::class, 'main'])->name('main');
     Route::resource('applications', ApplicationController::class);
-    Route::get('applications/{application}/answer', [AnswerController::class, 'create'])->name('answers.create');
+    Route::get('applications/{application}/answer', [AnswerController::class, 'create'])->name('answers.create')->middleware('role:manager');
     Route::post('applications/{application}/answer', [AnswerController::class, 'store'])->name('answers.store');
 
 });
