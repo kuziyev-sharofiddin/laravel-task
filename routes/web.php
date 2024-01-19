@@ -19,7 +19,4 @@ Route::middleware('auth')->group(function () {
     Route::post('applications/{application}/answer', [AnswerController::class, 'store'])->name('answers.store');
 
 });
-
-
-
 require __DIR__.'/auth.php';

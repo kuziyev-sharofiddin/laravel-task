@@ -1,43 +1,34 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Http\Request;
-use App\Models\Application;
-use App\Models\Answer;
+
+use App\Http\Requests\AnswerRequest;
+use App\Service\AnswerService;
+use App\Service\ApplicationService;
 use Illuminate\Support\Facades\Gate;
 
 class AnswerController extends Controller
 {
 
-    public function __constuct(){
+    public function __construct(protected AnswerService $answerService,protected ApplicationService $applicationService)
+    {
         $this->middleware('role:manager');
     }
-
-
-    public function create(Application $application){
+    public function create($application){
 
         if (! Gate::allows('update-post', auth()->user())) {
             abort(403);
         }
-
-
+        $application = $this->applicationService->getById($application);
         return view('answers.create', ['application' => $application]);
     }
 
-    public function store(Application $application, Request $request){
+    public function store(AnswerRequest $request){
 
-        // if (! Gate::allows('update-post', auth()->user())) {
-        //     abort(403);
-        // }
-
-        $request->validate(['body' => 'required']);
-
-        $application ->answer()->create([
-            'body' => $request->body
-        ]);
-
+        if (! Gate::allows('update-post', auth()->user())) {
+            abort(403);
+        }
+        $this->applicationService->createByApplication($request->all());
         return redirect()->route('dashboard');
-
-
     }
 }
